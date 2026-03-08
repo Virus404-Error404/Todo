@@ -43,9 +43,11 @@ jobs:
           cp -R "$RUNNER_TEMP/App.xcarchive/Products/Applications/App.app" "$RUNNER_TEMP/Payload/"
           cd $RUNNER_TEMP
           /usr/bin/zip -r todo-unsigned.ipa Payload
+          ls -lah $RUNNER_TEMP
+          ls -lah $RUNNER_TEMP/Payload
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: $RUNNER_TEMP/todo-unsigned.ipa
+          path: ${{ runner.temp }}/todo-unsigned.ipa
