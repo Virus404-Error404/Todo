@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#007AFF">
+    <meta name="description" content="Focus - A beautiful, premium to-do app for iPhone">
+    <title>To-do</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <div class="header-date" id="header-date">MONDAY, OCT 24</div>
+                    <h1 class="header-title">Today</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="btn-theme" aria-label="Toggle theme">
+                        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="progress-container"></div><br>
+
+            <div class="search-container">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="search-input" class="search-input" placeholder="Search tasks...">
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-tab active" id="filter-today">Today</button>
+                <button class="filter-tab" id="filter-upcoming">Upcoming</button>
+                <button class="filter-tab" id="filter-all">All</button>
+                <button class="filter-tab" id="filter-completed">Done</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+
+
+            <div id="task-list" class="task-list"></div>
+
+            <div id="empty-state" class="empty-state hidden">
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                </div>
+                <h3 class="empty-title">All caught up!</h3>
+                <p class="empty-subtitle">Enjoy your free time or add a new task</p>
+            </div>
+        </main>
+
+        <button class="fab fab-left" id="btn-calendar" aria-label="Calendar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+        </button>
+
+        <button class="fab" id="btn-add" aria-label="Add new task">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay"></div>
+
+    <div class="modal-sheet" id="task-modal">
+        <div class="modal-handle"></div>
+        <h2 class="modal-title" id="modal-title">New Task</h2>
+
+        <form id="task-form" onsubmit="return false;">
+            <div class="form-group">
+                <label class="form-label" for="task-title">Title</label>
+                <input type="text" id="task-title" class="form-input" placeholder="What do you need to do?" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="task-date">Due Date</label>
+                    <input type="date" id="task-date" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="task-priority">Priority</label>
+                    <select id="task-priority" class="form-select">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="task-tag">Tag (optional)</label>
+                <input type="text" id="task-tag" class="form-input" placeholder="work, personal, etc.">
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="btn-cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-save">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-sheet" id="calendar-modal">
+        <div class="modal-handle"></div>
+        <div class="calendar-header">
+            <button class="calendar-nav" id="calendar-prev">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <h2 class="calendar-title" id="calendar-month-year">March 2026</h2>
+            <button class="calendar-nav" id="calendar-next">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+        <div class="calendar-weekdays">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div class="calendar-days" id="calendar-days"></div>
+        <div class="calendar-tasks">
+            <div class="calendar-tasks-header" id="calendar-tasks-header">Tasks</div>
+            <div id="calendar-tasks"></div>
+        </div>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
